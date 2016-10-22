@@ -620,9 +620,15 @@ public class MaskProgressView extends View {
      */
     public void setmCurrentSeconds(int mCurrentSeconds) {
         this.mCurrentSeconds = mCurrentSeconds;
+        mCurrentProgressPosition = calculateCurrentPositionFromCurrentSeconds(mCurrentSeconds);
+        objectAnimatorProgress.setFloatValues(mCurrentProgressPosition / mWidth, 1.0f);
+        objectAnimatorProgress.setDuration((mMaxSeconds - mCurrentSeconds) * 1000);
+        if (mStatus == Status.PLAYING) {
+            objectAnimatorProgress.start();
+            isProgressCancelled = false;
+        }
         postInvalidate();
     }
-
     /**
      * Set Max progress
      *
